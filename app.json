@@ -26,9 +26,8 @@
         "value": "dev",
         "required": true
       },
-      "ZENATON_LISTEN_ARGS": {
-        "description": "The Zenaton Agent listen args",
-        "value": "--boot=boot.js --node",
+      "ZENATON_HUBSPOT_INTEGRATION_ID": {
+        "description": "The Hubspot integration ID (find it on https://app.zenaton.com/integrations)",
         "required": true
       }
     },

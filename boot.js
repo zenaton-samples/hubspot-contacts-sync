@@ -2,8 +2,8 @@
 const { workflow, task } = require('zenaton');
 
 // define tasks
-task("GetSentence", require("./tasks/getSentence"));
-task("LogSentence", require("./tasks/logSentence"));
+task("GetEnv", require("./tasks/GetEnv"));
+task("FindHubspotContact", require("./tasks/FindHubspotContact"));
 
 // define workflows
-workflow("HelloWorld", require("./workflows/helloWorld"));
+workflow("HubspotContactSync", require("./workflows/HubspotContactSync"));

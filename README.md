@@ -1,108 +1,217 @@
-# Zenaton Project Boilerplate
+<p align="center">
+  <a href="https://zenaton.com" target="_blank">
+    <img src="https://user-images.githubusercontent.com/36400935/58254828-e5176880-7d6b-11e9-9094-3f46d91faeee.png" target="_blank" />
+  </a><br>
+  Build and run event-driven processes within the product journey in days instead of months.<br>
+ie. payment, booking, personalized communication sequences, ETL processes and more.<br>
+  <a href="https://docs.zenaton.com" target="_blank">
+    <strong> Explore the docs » </strong>
+  </a> <br>
+  <a href="https://zenaton.com" target="_blank"> Website </a>
+    ·
+  <a href="https://github.com/zenaton-samples/" target="_blank"> Sample projects </a>
+    ·
+  <a href="https://github.com/zenaton/examples-node" target="_blank"> Examples </a>
+    ·
+  <a href="https://app.zenaton.com/tutorial/node/examples" target="_blank"> Tutorial </a>
+</p>
 
-This is an example of Zenaton project. It can be used as a starter to your own project. 
+## Table of contents
 
-## Development
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-The `boot.js` file is where you tell the Zenaton Agent where to find - by name - the source code of your tasks and workflows.
 
-> If you add a task or a workflow to your project, do not forget to update the `boot.js` file.
+- [Hubspot Contact Sync](#hubspot-contact-sync)
+  - [How to run it](#how-to-run-it)
+    - [Requirements](#requirements)
+    - [Zenaton Agent setup](#zenaton-agent-setup)
+      - [Running the Agent on Heroku (Recommended)](#running-the-agent-on-heroku-recommended)
+      - [Running the Agent locally](#running-the-agent-locally)
+      - [Running the Agent in Docker](#running-the-agent-in-docker)
+      - [Other hosting options](#other-hosting-options)
+    - [Running the workflow](#running-the-workflow)
+    - [Send events to the workflow](#send-events-to-the-workflow)
+  - [Going further](#going-further)
+  - [Troubleshooting](#troubleshooting)
+    - [Questions](#questions)
+    - [Issues with the Zenaton Agent](#issues-with-the-zenaton-agent)
+    - [Issues with this project](#issues-with-this-project)
 
-Look at Zenaton documentation to learn how to implement [workflows](https://docs.zenaton.com/workflows/implementation/) and [tasks](https://docs.zenaton.com/tasks/implementation/).
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Run 
+# Hubspot Contact Sync
 
-You can dispatch tasks and workflows by name from everywhere using [Zenaton API](https://docs.zenaton.com/client/graphql-api/). They will be processed as soon as you run this project.
+This Zenaton project shows how you can use the Hubspot integration to sync contacts and their information based on
+events happening inside your own application.
 
-> Note: tasks and workflows are dispatched in an environment (`AppEnv`) of your Zenaton application (`AppId`). They will be processed by this project, **if** you setup it with the same `AppId` and `AppEnv`. You must also provide an `Api Token` to authorize access to this application (found at https://app.zenaton.com/api)
+The workflow launches when the user registers to the application, sync its information with Hubspot and detects if
+the user is in trouble to set a property on the Hubspot contact which will allow someone to reach out to the user
+to help them.
 
-### Run Locally
-First, install dependencies:
+## How to run it
+
+### Requirements
+
+To run this project, you need the following:
+
+- A [Hubspot](https://www.hubspot.com/) account.
+- A custom "Contact Property" named "Became a user in trouble date" of type "Date picker" set in your Hubspot settings.
+- A [Zenaton](https://zenaton.com/register) account, to get your [App ID and API Token](https://app.zenaton.com/api).
+- The Zenaton Hubspot integration correctly setup. You can set it up on your [Dashboard](https://app.zenaton.com/integrations). Read the [full documentation](https://docs.zenaton.com/integrations/hubspot/) if you need help.
+
+### Zenaton Agent setup
+
+#### Running the Agent on Heroku (Recommended)
+
+Running the Agent on Heroku is the quickier way to get started. Make sure you have an account on [Heroku](https://www.heroku.com/) before continuing.
+
+Click the following button to deploy this project on Heroku. You will be prompted for your Zenaton credentials and a Sendgrid API key (optional).
+Make sure to fill-in them correctly and click "Deploy".
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+If you go to the [Agents page](https://app.zenaton.com/agents) on your Dashboard, you should see one agent connected.
+
+#### Running the Agent locally
+
+Make sure you have NodeJS correctly installed on your system. If you don't, you can download
+NodeJS [here](https://nodejs.org/en/download/).
+
+Clone this repository:
+
+```sh
+git clone git@github.com:zenaton-samples/hubspot-contacts-sync.git
 ```
+
+Go into the project directory and install dependencies:
+
+```sh
 npm install
 ```
-then, fill-in `ZENATON_APP_ID` and `ZENATON_API_TOKEN` in the `.env` file.
 
-Install a Zenaton Agent:
-````sh
-curl https://install.zenaton.com | sh
-````
-and run it:
-````sh
-zenaton listen --boot=boot.js
-````
+Fill-in the `.env` file with all the required credentials. You can find your Zenaton App ID and API Token on [this page](https://app.zenaton.com/api).
+You will also need to fill your Hubspot integration ID which you can find on [this page](https://app.zenaton.com/integrations).
 
-### Run in Docker
+Install the Zenaton Agent on your system:
 
-Create your `.env` file
+```sh
+curl https://install.zenaton.com/ | sh
 ```
+
+And then run the agent:
+
+```
+zenaton listen --boot=boot.js
+```
+
+If you go to the [Agents page](https://app.zenaton.com/agents) on your Dashboard, you should see one agent connected.
+
+#### Running the Agent in Docker
+
+Make sure you have Docker and docker-compose correctly installed on your system.
+If not, you can find the installation instructions for Docker [here](https://docs.docker.com/install/)
+
+Create your `.env` file by running the following command:
+
+```sh
 cp -n .env.sample .env
 ```
-and fill-in `ZENATON_APP_ID` and `ZENATON_API_TOKEN` in it.
 
-Then start your container:
+Fill-in the `.env` file with all the required credentials. You can find your Zenaton App ID and API Token on [this page](https://app.zenaton.com/api).
+You will also need to fill your Hubspot integration ID which you can find on [this page](https://app.zenaton.com/integrations).
+
+Then, you can start the agent:
+
+```sh
+cd docker && docker-compose build && docker-compose up
 ```
-cd docker && docker-compose up
+
+If you go to the [Agents page](https://app.zenaton.com/agents) on your Dashboard, you should see one agent connected.
+
+#### Other hosting options
+
+You can check [our documentation](https://docs.zenaton.com/going-to-production/) for more deployment options: AWS, Google Cloud, Clever Cloud, and more.
+
+### Running the workflow
+
+You're all set. It's time to start the workflow. We will use the `curl` command in a terminal to do that,
+but you can start the workflow from your application, in any programming language as long as
+you have access to an HTTP client.
+
+Make sure to replace `<YOU API TOKEN>` and `<YOUR APP ID>` with the one you retrieved on the Zenaton website before using the following command.
+
+```sh
+curl --request POST \
+  --url https://gateway.zenaton.com/graphql \
+  --header 'authorization: Bearer <YOUR API TOKEN>' \
+  --header 'content-type: application/json' \
+  --data '{"query":"mutation ($input: DispatchWorkflowInput!) {\n  dispatchWorkflow(input: $input) {\n    id\n  }\n}\n","variables":{"input":{"appId":"<YOUR APP ID>","environment":"dev","name":"HubspotContactSync","input":"[{\"email\": \"john.doe@example.org\",\"firstname\": \"John\",\"lastname\": \"Doe\", \"phone\": \"+33623456789\"}]","tag":"user:123","version":null}}}'
 ```
 
-### Run on Heroku
+This starts the workflow and you should be able to see it on your [Dashboard](https://app.zenaton.com/workflows).
 
-Follow this button [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy), then fill in the env variables and click "deploy".
+The workflow will start by creating a new contact in Hubspot. Make sure your don't already have a contact with the same email address in Hubspot,
+otherwise the creation of the contact will fail.
 
-### Run somewhere else
+After creating the contact, it waits for a `start_process` event which could be anything your user is beginning to do in your own application.
 
-Check our [documentation](https://docs.zenaton.com/going-to-production/) for more options (AWS, Google Cloud, Clever Cloud ...)
+### Send events to the workflow
 
-### Checking that your project is running
-Whatever your installation method, you should see that a new Agent is listening from this url: https://app.zenaton.com/agents (if you do not see it, please check again that you have selected the right application and environment).
+Let's send this event using a `curl` command again. You can also send events from your application using an HTTP Client to send events
+through the Zenaton API.
 
-## Dispatching Tasks and Workflows
+Again, make sure to correctly replace the `<YOUR API TOKEN>` and `<YOUR APP ID>` placeholders in the following command, and then run it:
 
-### Using Zenaton API 
-Tasks and workflows can be dispatched by name from everywhere using the [Zenaton API](https://docs.zenaton.com/client/graphql-api/) or our [Node.js SDK](https://github.com/zenaton/zenaton-node).
+```sh
+curl --request POST \
+  --url https://gateway.zenaton.com/graphql \
+  --header 'authorization: Bearer <YOUR API TOKEN>' \
+  --header 'content-type: application/json' \
+  --data '{"query":"mutation ($input: SendEventToWorkflowsInput!) {\n  sendEventToWorkflows(input: $input) {\n    status\n  }\n}\n","variables":{"input":{"appId":"<YOUR APP ID>","environment":"dev","name":"start_process","data":"[]","selector":{"name":"HubspotContactSync","tag":"user:123"}}}}'
+```
 
-You can test it from your command line interface:
+Check your Dashboard to see the event that has been received by the workflow. And you will see the event `start_process` has been received
+by your workflow, and it is now waiting for a `complete_process` event for at most 20 minutes. If this event is not received within
+20 minutes, it's probably that something went wrong.
 
-Dispatching a `"<WORKFLOW NAME>"` workflow: 
+Now you can send the `complete_process` event with the following `curl` command.
+Make sure to correctly replace the `<YOUR API TOKEN>` and `<YOUR APP ID>` placeholders before running the command:
 
-````bash
-curl -X POST https://gateway.zenaton.com/graphql \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -H "Authorization: Bearer <API_TOKEN> \
-  -d '{"query":"mutation($input: DispatchWorkflowInput!) { dispatchWorkflow(input: $input) { id } }","variables":{"input":{"appId":"<APP_ID>","environment":"dev","name":"<WORKFLOW NAME>","input":"[...<WORKFLOW INPUT>]"}}}'
-````
+```sh
+curl --request POST \
+  --url https://gateway.zenaton.com/graphql \
+  --header 'authorization: Bearer <YOUR API TOKEN>' \
+  --header 'content-type: application/json' \
+  --data '{"query":"mutation ($input: SendEventToWorkflowsInput!) {\n  sendEventToWorkflows(input: $input) {\n    status\n  }\n}\n","variables":{"input":{"appId":"<YOUR APP ID>","environment":"dev","name":"complete_process","data":"[]","selector":{"name":"HubspotContactSync","tag":"user:123"}}}}'
+```
 
-> Do not forget to replace `<APP_ID>` and `<API_TOKEN>` by your Zenaton AppId and api token. 
+After running the command, you will see the `complete_process` received by your workflow. It means the user successfully completed the process
+in the given timeframe.
 
-Sending a `"<EVENT NAME>"` event to this workflow:
+Now, try to restart the workflow with a different email address, and at the last step, instead of sending the `complete_process` event,
+wait 20 minutes. You will see your workflow will do an extra step: it will update the Hubspot contact to set the "User became in trouble date"
+property to the current date. This way you will be able to easily find in Hubspot contacts who have been in trouble with your application
+and you can decide what to do next to help them.
 
-````bash
-curl -X POST https://gateway.zenaton.com/graphql \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -H "Authorization: Bearer <API_TOKEN> \
-  -d '{"query":"mutation($input: SendEventToWorkflowsInput!) { sendEventToWorkflows(input: $input) { status } }","variables":{"input":{"appId":"<APP_ID>","environment":"dev","name":"<EVENT NAME>","data":"[...<EVENT DATA>]","selector":{"id":"<WORKFLOW_ID>"}}}}'
-````
+## Going further
 
-> Do not forget to replace `<APP_ID>` and `<API_TOKEN>` by your Zenaton AppId and api token. And <WORKFLOW_ID> by your workflow's id that you have received when dispatched.
+There are a few things that could be improved in this workflow:
 
-### Example App 
+The workflow starts by creating a contact, but sometimes this contact will already exist because it has been added from somewhere else.
+In that case, try to improve the workflow by first checking if the contact exists in Hubspot, and if it does, updating it instead of
+creating it.
 
-We have provided an [example app](https://github.com/zenaton/nodejs-example-app) with basic UI to dispatch workflows and events with associated data to your Zenaton project. After installation, you can (optionaly) add your workflows and some examples of input and event in the `public/config.json` file. eg.
+## Troubleshooting
 
-````json
-{
-  "workflows": [
-    {
-      "name": "HelloWorld",
-      "input": [ "Me" ],
-    }
-  ]
-} 
-````
-> You need to rebuild your example app after having modified this file. If you prefer, you can update directly `dist/config.json` and simply reload the page - but your changes will be lost at the next rebuild.
+### Questions
 
-## Monitoring Tasks and Worklows Processing
+If you encounter any issues or problems click on the chat in the bottom right hand side of the screen on the Zenaton dashboard.
 
-Look at your [dashboard](https://app.zenaton.com/workflows) (if you do not see your dispatched tasks or workflows, please check that you have selected the right application and environment).
+### Issues with the Zenaton Agent
+
+If you have a question about the Agent installation or usage, you can take a look at the [dedicated documentation](https://docs.zenaton.com/agent/installation/).
+
+### Issues with this project
+
+If you have any issue with this sample project, feel free to open a new issue on the repository.
