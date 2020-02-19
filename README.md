@@ -42,12 +42,11 @@ ie. payment, booking, personalized communication sequences, ETL processes and mo
 
 # Hubspot Contact Sync
 
-This Zenaton project shows how you can use the Hubspot integration to sync contacts and their information based on
+This Zenaton project shows how you can use the Hubspot integration to sync inbound contacts based on
 events happening inside your own application.
 
-The workflow launches when the user registers to the application, sync its information with Hubspot and detects if
-the user is in trouble to set a property on the Hubspot contact which will allow someone to reach out to the user
-to help them.
+The workflow launches when the user registers in the application.  It checks to see if the user is an existing contact and updates their information or adds a new contact.  
+
 
 ## How to run it
 
