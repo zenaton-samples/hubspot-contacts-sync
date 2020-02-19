@@ -5,6 +5,7 @@
   "repository": "https://github.com/zenaton/zenaton-boilerplate.git",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "zenaton": "^0.8.0"
   },
   "scripts": {
