@@ -64,7 +64,7 @@ To run this project, you need the following:
 
 Running the Agent on Heroku is the quickier way to get started. Make sure you have an account on [Heroku](https://www.heroku.com/) before continuing.
 
-Click the following button to deploy this project on Heroku. You will be prompted for your Zenaton credentials and a Sendgrid API key (optional).
+Click the following button to deploy this project on Heroku. You will be prompted for your Zenaton credentials and your Hubspot integration ID.
 Make sure to fill-in them correctly and click "Deploy".
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
@@ -99,7 +99,7 @@ curl https://install.zenaton.com/ | sh
 
 And then run the agent:
 
-```
+```sh
 zenaton listen --boot=boot.js
 ```
 
